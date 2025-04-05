@@ -1,0 +1,15 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    mysql2 (0.5.6)
+    webrick (1.9.1)
+
+PLATFORMS
+  aarch64-linux
+
+DEPENDENCIES
+  mysql2
+  webrick
+
+BUNDLED WITH
+   2.4.19
