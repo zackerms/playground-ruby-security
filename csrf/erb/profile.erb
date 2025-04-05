@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>プロフィール</title>
+  <meta charset="UTF-8">
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
+    .form-group { margin-bottom: 15px; }
+    label { display: block; margin-bottom: 5px; }
+    input[type="email"] { width: 100%; padding: 8px; }
+    button { padding: 8px 16px; background-color: #4CAF50; color: white; border: none; cursor: pointer; }
+    .success { color: green; margin-bottom: 15px; }
+    .info { background-color: #f8f8f8; padding: 15px; margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+  <h1>プロフィール</h1>
+  
+  <% if req.query['updated'] == '1' %>
+    <div class="success">メールアドレスが更新されました</div>
+  <% end %>
+  
+  <div class="info">
+    <p><strong>ユーザー名:</strong> <%= user['username'] %></p>
+    <p><strong>現在のメールアドレス:</strong> <%= user['email'] %></p>
+  </div>
+  
+  <h2>メールアドレスの更新</h2>
+  
+  <!-- CSRFに脆弱なフォーム - セキュリティトークンがない -->
+  <form method="post" action="/update_email">
+    <div class="form-group">
+      <label for="email">新しいメールアドレス:</label>
+      <input type="email" id="email" name="email" required>
+    </div>
+    
+    <button type="submit">更新</button>
+  </form>
+  
+  <p><a href="/logout">ログアウト</a></p>
+</body>
+</html>

