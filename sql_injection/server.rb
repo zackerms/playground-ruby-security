@@ -21,12 +21,6 @@ if client.query("SELECT COUNT(*) FROM users").first["COUNT(*)"] == 0
   client.query("INSERT IGNORE INTO users VALUES (5, 'eve', 'eve-password', 'user')")
 end
 
-client.query("INSERT IGNORE INTO users VALUES (1, 'admin', 'admin-password', 'admin')")
-client.query("INSERT IGNORE INTO users VALUES (2, 'alice', 'alice-password', 'user')")
-client.query("INSERT IGNORE INTO users VALUES (3, 'bob', 'bob-password', 'user')")
-client.query("INSERT IGNORE INTO users VALUES (4, 'charlie', 'charlie-password', 'user')")
-client.query("INSERT IGNORE INTO users VALUES (5, 'eve', 'eve-password', 'user')")
-
 # Create a WebRick server
 server = WEBrick::HTTPServer.new(:Port => 3000)
 
