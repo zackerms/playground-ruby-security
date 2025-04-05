@@ -4,10 +4,12 @@ require 'mysql2'
 # sample request
 # 
 # OK
-# http://localhost:3000/search?username=admin
+# http://localhost:3000/search?username=user
+# http://localhost:3000/find?username=user
 # 
 # SQL Injection
 # http://localhost:3000/search?username=' OR '1 '= '1
+# http://localhost:3000/find?username=user' OR '1 '= '1
 # 
 
 # Create MySQL client
@@ -38,6 +40,19 @@ server.mount_proc '/search' do |req, res|
   query = "SELECT * FROM users WHERE username = '#{username}'"
   begin
     results = client.query(query)
+    res.status = 200
+    res['Content-Type'] = 'text/plain'
+    res.body = results.to_a.inspect
+  rescue Mysql2::Error => e
+    res.body = "Error: #{e.message}"
+  end
+end
+
+server.mount_proc '/find' do |req, res|
+  username = req.query['username']
+  query = "SELECT * FROM users WHERE username = '#{username}'"
+  begin
+    results = client.query(query).first
     res.status = 200
     res['Content-Type'] = 'text/plain'
     res.body = results.to_a.inspect
