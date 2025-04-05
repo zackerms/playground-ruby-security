@@ -37,7 +37,6 @@ server.mount_proc '/search' do |req, res|
   # Vulnerable SQL query - NO SANITIZATION
   query = "SELECT * FROM users WHERE username = '#{username}'"
   begin
-    # results = db.execute(query)
     results = client.query(query)
     res.status = 200
     res['Content-Type'] = 'text/plain'
