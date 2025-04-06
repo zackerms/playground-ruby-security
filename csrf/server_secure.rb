@@ -9,8 +9,11 @@ class Session
   
   def self.create(user_id)
     session_id = SecureRandom.hex(16)
+    # トークンを付与
+    csrf_token = SecureRandom.hex(32)
     @@sessions[session_id] = {
       user_id: user_id,
+      csrf_token: csrf_token,
       created_at: Time.now
     }
     return session_id
@@ -40,11 +43,10 @@ client.query("CREATE TABLE IF NOT EXISTS users (
   email VARCHAR(255) NOT NULL
 )")
 
-if client.query("SELECT COUNT(*) FROM users WHERE username = 'alice'").first.values.first == 0
-  client.query("INSERT INTO users (username, password, email) VALUES ('alice', 'password', 'alice@example.com')")
+if client.query("SELECT COUNT(*) FROM users WHERE username = 'bob'").first.values.first == 0
+  client.query("INSERT INTO users (username, password, email) VALUES ('bob', 'password', 'bob@example.com')")
 end
 
-# WEBrickサーバーの設定
 server = WEBrick::HTTPServer.new(
   Port: ENV['PORT'] || 3000,
   DocumentRoot: "."
@@ -103,6 +105,14 @@ server.mount_proc('/update_email') do |req, res|
     
     if session.nil?
       res.set_redirect(WEBrick::HTTPStatus::Found, '/login')
+      next
+    end
+
+    # CSRFトークンの検証
+    csrf_token = req.query['csrf_token']
+    if !csrf_token || csrf_token != session[:csrf_token]
+      res.status = WEBrick::HTTPStatus::Forbidden
+      res.body = "CSRF token mismatch"
       next
     end
     

@@ -34,6 +34,9 @@
       <input type="email" id="email" name="email" required>
     </div>
     
+    <%# CSRF Tokenの隠しフィールド %>
+    <input type="hidden" name="csrf_token" value="<%= session[:csrf_token] %>">
+    
     <button type="submit">更新</button>
   </form>
   

