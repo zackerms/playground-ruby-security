@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>XSS脆弱性サンプル</title>
+  <meta charset="UTF-8">
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    .message { border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; }
+    .form { margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h1>メッセージボード（XSS脆弱性あり）</h1>
+  
+  <div class="form">
+    <h2>新しいメッセージを投稿</h2>
+    <form method="POST" action="/">
+      <textarea name="message" rows="3" cols="40"></textarea><br>
+      <input type="submit" value="投稿">
+    </form>
+  </div>
+  
+  <h2>メッセージ一覧</h2>
+  <% messages.each do |message| %>
+    <div class="message">
+      <!-- エスケープする -->
+      <%= CGI.escapeHTML(message['message']) %>
+    </div>
+  <% end %>
+  
+  <div class="info">
+    <h3>XSS攻撃サンプル</h3>
+    <code>&lt;script&gt;alert("xss");&lt;/script&gt;</code><br>
+    <code>&lt;p style="color: red"&gt;xss&lt;/p&gt;</code>
+  </div>
+</body>
+</html>
