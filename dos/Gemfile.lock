@@ -1,0 +1,21 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    cgi (0.4.2)
+    connection_pool (2.5.0)
+    erb (4.0.4)
+      cgi (>= 0.3.3)
+    mysql2 (0.5.6)
+    webrick (1.9.1)
+
+PLATFORMS
+  aarch64-linux
+
+DEPENDENCIES
+  connection_pool
+  erb
+  mysql2
+  webrick
+
+BUNDLED WITH
+   2.4.19

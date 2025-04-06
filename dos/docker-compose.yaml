@@ -1,0 +1,59 @@
+services:
+  web-image:
+    image: ruby:3.2
+    volumes:
+      - .:/app
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.3'
+          memory: 256M
+    depends_on:
+      - db
+    command: bash -c "bundle install --path vendor/bundle && bundle exec ruby server_image.rb"
+  web-db:
+    image: ruby:3.2
+    volumes:
+      - .:/app
+    working_dir: /app
+    ports:
+      - "4000:3000"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.3'
+          memory: 256M
+    depends_on:
+      - db
+    command: bash -c "bundle install --path vendor/bundle && bundle exec ruby server_with_db.rb"
+  db:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: test_db 
+    command: --default-authentication-plugin=mysql_native_password
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - web-image
+      - web-db
+    deploy:
+      resources:
+        limits:
+          cpus: '0.3'
+          memory: 256M
+  k6:
+    container_name: k6
+    image: grafana/k6
+    volumes:
+      - ./k6:/scripts

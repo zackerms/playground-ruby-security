@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>DoS</title>
+  <meta charset="UTF-8">
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    .user { border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+  <h1>DoS</h1>
+  <img src="http://localhost:3000/public/rails.png" height="100">
+  <h2>メッセージ一覧</h2>
+  <% @users.each do |user| %>
+    <div class="user">
+      <%= user['username'] %>
+    </div>
+  <% end %>
+</body>
+</html>
