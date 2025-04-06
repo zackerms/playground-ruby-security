@@ -1,14 +1,24 @@
 services:
-  ruby:
+  web:
     image: ruby:3.2
     volumes:
       - .:/app
     working_dir: /app
+    environment:
+      PORT: 3000
     ports:
       - "3000:3000"
-    stdin_open: true
-    tty: true
-    command: bash
+    command: bash -c "bundle install --path vendor/bundle && bundle exec ruby server.rb"
+  web-secure:
+    image: ruby:3.2
+    volumes:
+      - .:/app
+    working_dir: /app
+    environment:
+      PORT: 4000
+    ports:
+      - "4000:4000"
+    command: bash -c "bundle install --path vendor/bundle && bundle exec ruby server_secure.rb"
   db:
     image: mysql:8.0
     ports:

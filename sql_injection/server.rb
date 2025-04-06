@@ -22,7 +22,7 @@ if client.query("SELECT COUNT(*) FROM users").first["COUNT(*)"] == 0
 end
 
 # Create a WebRick server
-server = WEBrick::HTTPServer.new(:Port => 3000)
+server = WEBrick::HTTPServer.new(:Port => ENV['PORT'] || 3000)
 
 # user search(vulnerable to SQL injection)
 # sample request
