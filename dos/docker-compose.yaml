@@ -11,24 +11,22 @@ services:
         limits:
           cpus: '0.3'
           memory: 256M
-    depends_on:
-      - db
     command: bash -c "bundle install --path vendor/bundle && bundle exec ruby server_image.rb"
-  web-db:
-    image: ruby:3.2
-    volumes:
-      - .:/app
-    working_dir: /app
-    ports:
-      - "4000:3000"
-    deploy:
-      resources:
-        limits:
-          cpus: '0.3'
-          memory: 256M
-    depends_on:
-      - db
-    command: bash -c "bundle install --path vendor/bundle && bundle exec ruby server_with_db.rb"
+  # web-db:
+  #   image: ruby:3.2
+  #   volumes:
+  #     - .:/app
+  #   working_dir: /app
+  #   ports:
+  #     - "4000:4000"
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         cpus: '0.3'
+  #         memory: 256M
+  #   depends_on:
+  #     - db
+  #   command: bash -c "bundle install --path vendor/bundle && bundle exec ruby server_with_db.rb"
   db:
     image: mysql:8.0
     ports:
@@ -46,7 +44,7 @@ services:
       - ./nginx/conf.d:/etc/nginx/conf.d
     depends_on:
       - web-image
-      - web-db
+      # - web-db
     deploy:
       resources:
         limits:

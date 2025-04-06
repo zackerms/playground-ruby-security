@@ -26,7 +26,7 @@ DB_POOL.with do |client|
 end
 
 # Create a WebRick server
-server = WEBrick::HTTPServer.new(:Port => 3000)
+server = WEBrick::HTTPServer.new(:Port => 4000)
 
 server.mount('/public', WEBrick::HTTPServlet::FileHandler, 'public')
 
