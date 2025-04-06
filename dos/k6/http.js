@@ -24,7 +24,8 @@ export const options = {
 };
 
 export default function () {
-  const res = http.get("http://web-image:3000/", { timeout: '5s'});
+  const endpoint = __ENV.ENDPOINT || "http://nginx:3000/";
+  const res = http.get(endpoint, { timeout: '5s'});
   
   check(res, {
     'status is 200': (r) => r.status === 200,
